@@ -3,6 +3,7 @@
 RCLONE_CONFIG=$(bashio::config 'configuration_path')
 REMOTES=$(bashio::config 'remotes')
 LOCAL_RETENTION=$(bashio::config 'local_retention_days')
+LOCAL=$(bashio::config 'local_path')
 
 bashio::log.info "Pruning local files..."
 find /backup/ -mtime +${LOCAL_RETENTION} -type f -delete
@@ -13,7 +14,7 @@ for remote in ${REMOTES}; do
     remote_path=$(bashio::jq "${remote}" ".path")
     remote_retention=$(bashio::jq "${remote}" ".retention_days")
 
-    bashio::log.info "Starting remote copy for ${remote_name}..."
+    bashio::log.info "Starting remote copy from ${LOCAL} for ${remote_name}..."
     
     rclone --config ${RCLONE_CONFIG} \
         sync -v \
@@ -21,7 +22,7 @@ for remote in ${REMOTES}; do
         --delete-during \
         --delete-excluded \
         --ignore-errors \
-        --ignore-existing /backup/ "${remote_name}:${remote_path}"
+        --ignore-existing ${LOCAL} "${remote_name}:${remote_path}"
     
-    bashio::log.info "Remote copy for ${remote_name} finished"
+    bashio::log.info "Remote copy from ${LOCAL} for ${remote_name} finished"
 done
