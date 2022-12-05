@@ -3,11 +3,13 @@
 RCLONE_CONFIG=$(bashio::config 'configuration_path')
 REMOTES=$(bashio::config 'remotes')
 LOCAL_RETENTION=$(bashio::config 'local_retention_days')
-if [ $(bashio::config.has_value 'local_path') ]; then
- LOCAL=$(bashio::config 'local_path')
+
+if bashio::config.has_value 'local_path'; then
+  LOCAL=$(bashio::config 'local_path')
 else
- LOCAL='/backup/'
+  bashio::exit.nok "Missing 'local_path' in configuration" 
 fi
+
 bashio::log.info "Pruning local files..."
 find ${LOCAL} -mtime +${LOCAL_RETENTION} -type f -delete
 bashio::log.info "Pruning local files finished"
