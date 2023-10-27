@@ -1,5 +1,5 @@
 name: Rclone
-version: 3.0.12
+version: 3.0.12.1
 slug: rclone
 description: |
   Rclone is a command line program to sync files and directories to and
@@ -16,6 +16,8 @@ boot: manual
 url: https://alxx.nl/home-assistant-addons/tree/master/rclone
 hassio_role: default
 hassio_api: true
+full_access: true
+protected: false
 map:
   - backup:rw
   - config:rw
