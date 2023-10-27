@@ -14,7 +14,7 @@ startup: once
 stage: stable
 boot: manual
 url: https://alxx.nl/home-assistant-addons/tree/master/rclone
-hassio_role: default
+hassio_role: admin
 hassio_api: true
 full_access: true
 protected: false
